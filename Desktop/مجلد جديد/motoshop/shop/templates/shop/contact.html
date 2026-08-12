@@ -1,0 +1,142 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}تواصل معنا - موتور شوب{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{% static 'images/20.jpg' %}" class="w-full h-full object-cover" alt="خلفية التواصل">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/70 via-[#0a0a0f]/90 to-[#0a0a0f]"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+        <h1 class="text-5xl md:text-6xl font-black mb-6">تواصل معنا</h1>
+        <p class="text-gray-400 text-lg leading-relaxed">
+            نحن هنا لمساعدتك! تواصل معنا عبر أي من القنوات التالية وسنرد عليك في أقرب وقت
+        </p>
+    </div>
+</section>
+
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="grid lg:grid-cols-2 gap-12">
+            <div class="space-y-8 animate-on-scroll">
+                <div>
+                    <span class="text-red-500 font-bold tracking-widest text-sm">📞 معلومات التواصل</span>
+                    <h2 class="text-3xl font-black mt-4 mb-6">نحن هنا لمساعدتك</h2>
+                    <p class="text-gray-400 leading-relaxed">
+                        فريقنا متواجد على مدار الساعة للإجابة على استفساراتك ومساعدتك في اختيار الدراجة المثالية.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 bg-gray-800/30 rounded-xl p-5 border border-gray-800/50">
+                        <div class="w-12 h-12 bg-red-600/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-phone-alt text-red-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">رقم الهاتف</h4>
+                            <p class="text-gray-400 text-sm">778348969</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 bg-gray-800/30 rounded-xl p-5 border border-gray-800/50">
+                        <div class="w-12 h-12 bg-orange-600/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-envelope text-orange-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">البريد الإلكتروني</h4>
+                            <p class="text-gray-400 text-sm">eslamalbna@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 bg-gray-800/30 rounded-xl p-5 border border-gray-800/50">
+                        <div class="w-12 h-12 bg-blue-600/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-map-marker-alt text-blue-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">العنوان</h4>
+                            <p class="text-gray-400 text-sm">  اب اليمن السعيد  </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 bg-gray-800/30 rounded-xl p-5 border border-gray-800/50">
+                        <div class="w-12 h-12 bg-green-600/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-clock text-green-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">ساعات العمل</h4>
+                            <p class="text-gray-400 text-sm">السبت - الخميس: 9:00 ص - 9:00 م</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-4">تابعنا على</h4>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-12 h-12 rounded-xl bg-gray-800 flex items-center justify-center hover:bg-red-600 transition group">
+                            <i class="fab fa-twitter text-xl group-hover:scale-110 transition"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-xl bg-gray-800 flex items-center justify-center hover:bg-red-600 transition group">
+                            <i class="fab fa-instagram text-xl group-hover:scale-110 transition"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-xl bg-gray-800 flex items-center justify-center hover:bg-red-600 transition group">
+                            <i class="fab fa-snapchat text-xl group-hover:scale-110 transition"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-xl bg-gray-800 flex items-center justify-center hover:bg-red-600 transition group">
+                            <i class="fab fa-whatsapp text-xl group-hover:scale-110 transition"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="animate-on-scroll">
+                <div class="bg-gray-800/30 rounded-2xl p-8 border border-gray-800/50">
+                    <h3 class="text-2xl font-bold mb-6">أرسل رسالتك</h3>
+                    <form method="post" class="space-y-5">
+                        {% csrf_token %}
+                        <div class="grid sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-bold mb-2">الاسم</label>
+                                {{ form.name }}
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">البريد الإلكتروني</label>
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">الموضوع</label>
+                            {{ form.subject }}
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">الرسالة</label>
+                            {{ form.message }}
+                        </div>
+                        <button type="submit" class="w-full btn-primary py-4 rounded-xl font-bold text-lg">
+                            <i class="fas fa-paper-plane ml-2"></i>إرسال الرسالة
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section with Image Background -->
+<section class="py-12 bg-[#0d0d14]">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="relative rounded-2xl overflow-hidden border border-gray-800/50 h-96">
+            <img src="{% static 'images/21.jpg' %}" class="w-full h-full object-cover opacity-30" alt="خريطة">
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="text-center bg-[#0a0a0f]/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-800/50">
+                    <div class="text-5xl mb-4">📍</div>
+                    <h3 class="text-xl font-bold mb-2">موقعنا</h3>
+                    <p class="text-gray-400">الرياض، المملكة العربية السعودية</p>
+                    <a href="https://maps.google.com" target="_blank" class="inline-block mt-4 text-red-500 font-bold hover:underline">
+                        <i class="fas fa-map-marked-alt ml-2"></i>فتح في خرائط Google
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

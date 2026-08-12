@@ -1,0 +1,93 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}طلباتي - موتور شوب{% endblock %}
+
+{% block content %}
+<section class="relative py-16 bg-gradient-to-b from-[#0d0d14] to-[#0a0a0f]">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <h1 class="text-4xl font-black mb-4"><i class="fas fa-box text-red-500 ml-3"></i>طلباتي</h1>
+        <p class="text-gray-400">سجل طلباتك السابقة والحالية</p>
+    </div>
+</section>
+
+<section class="py-12">
+    <div class="max-w-5xl mx-auto px-4">
+        {% if orders %}
+        <div class="space-y-6">
+            {% for order in orders %}
+            <div class="bg-gray-800/30 rounded-2xl border border-gray-800/50 overflow-hidden animate-on-scroll">
+                <div class="p-6 border-b border-gray-800/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-red-600/10 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-shopping-bag text-red-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">طلب #{{ order.id }}</h3>
+                            <p class="text-gray-500 text-sm">{{ order.created_at|date:"Y-m-d H:i" }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="px-4 py-2 rounded-full text-sm font-bold
+                            {% if order.status == 'delivered' %}bg-green-600/10 text-green-500
+                            {% elif order.status == 'cancelled' %}bg-red-600/10 text-red-500
+                            {% elif order.status == 'shipped' %}bg-blue-600/10 text-blue-500
+                            {% else %}bg-yellow-600/10 text-yellow-500{% endif %}">
+                            <i class="fas fa-circle text-xs ml-1"></i>{{ order.get_status_display }}
+                        </span>
+                        <span class="text-red-500 font-black text-xl">{{ order.total }} ر.س</span>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <div class="space-y-4">
+                        {% for item in order.items.all %}
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0">
+                                {% if item.motorcycle.image %}
+                                    <img src="{{ item.motorcycle.image.url }}" class="w-full h-full object-cover">
+                                {% else %}
+                                    <div class="w-full h-full flex items-center justify-center text-2xl">🏍️</div>
+                                {% endif %}
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-bold">{{ item.motorcycle.name }}</h4>
+                                <p class="text-gray-500 text-sm">{{ item.quantity }}x {{ item.price }} ر.س</p>
+                            </div>
+                            <div class="text-red-500 font-bold">{{ item.get_subtotal }} ر.س</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-gray-800/50 grid sm:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-gray-500">عنوان الشحن:</span>
+                            <p class="mt-1">{{ order.shipping_address }}</p>
+                        </div>
+                        <div>
+                            <span class="text-gray-500">رقم الهاتف:</span>
+                            <p class="mt-1">{{ order.phone }}</p>
+                        </div>
+                        {% if order.notes %}
+                        <div class="sm:col-span-2">
+                            <span class="text-gray-500">ملاحظات:</span>
+                            <p class="mt-1">{{ order.notes }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-20">
+            <div class="text-8xl mb-6">📦</div>
+            <h2 class="text-3xl font-bold mb-4">لا توجد طلبات</h2>
+            <p class="text-gray-500 mb-8">لم تقم بأي طلبات بعد</p>
+            <a href="{% url 'product_list' %}" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-flex items-center gap-2">
+                <i class="fas fa-motorcycle"></i>تصفح الدراجات
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

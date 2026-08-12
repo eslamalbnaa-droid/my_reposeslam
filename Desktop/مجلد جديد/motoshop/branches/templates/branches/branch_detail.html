@@ -1,0 +1,108 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}{{ branch.name }} - موتور شوب{% endblock %}
+
+{% block content %}
+<section class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0">
+        {% if branch.image %}
+            <img src="{{ branch.image.url }}" class="w-full h-full object-cover opacity-30" alt="">
+        {% else %}
+            <img src="{% static 'images/21.jpg' %}" class="w-full h-full object-cover opacity-30" alt="">
+        {% endif %}
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/80 to-[#0a0a0f]"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 relative z-10">
+        <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+            <a href="{% url 'home' %}" class="hover:text-red-500 transition">الرئيسية</a>
+            <i class="fas fa-chevron-left text-xs"></i>
+            <a href="{% url 'branch_list' %}" class="hover:text-red-500 transition">الفروع</a>
+            <i class="fas fa-chevron-left text-xs"></i>
+            <span class="text-red-500">{{ branch.name }}</span>
+        </div>
+        <h1 class="text-4xl font-black mb-2">{{ branch.name }}</h1>
+        <p class="text-gray-400"><i class="fas fa-map-marker-alt ml-2 text-red-500"></i>{{ branch.city }} - {{ branch.address }}</p>
+    </div>
+</section>
+
+<section class="py-12">
+    <div class="max-w-5xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-gray-800/30 rounded-2xl p-8 border border-gray-800/50">
+                <h3 class="text-xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-info-circle text-red-500 ml-2"></i>معلومات الفرع
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-red-600/10 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user text-red-500"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">المدير</p>
+                            <p class="font-bold">{{ branch.manager_name|default:"غير محدد" }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-orange-600/10 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-phone text-orange-500"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">الهاتف</p>
+                            <p class="font-bold">{{ branch.phone }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-blue-600/10 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-envelope text-blue-500"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">البريد</p>
+                            <p class="font-bold">{{ branch.email|default:"غير محدد" }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-green-600/10 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-clock text-green-500"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">ساعات العمل</p>
+                            <p class="font-bold">{{ branch.opening_hours }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-800/30 rounded-2xl p-8 border border-gray-800/50">
+                <h3 class="text-xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-boxes text-red-500 ml-2"></i>المخزون المتاح
+                </h3>
+                {% if inventory %}
+                <div class="space-y-3 max-h-80 overflow-y-auto">
+                    {% for item in inventory %}
+                    <div class="flex justify-between items-center bg-gray-900/50 rounded-xl p-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-gray-800 rounded-lg overflow-hidden">
+                                {% if item.motorcycle.image %}
+                                    <img src="{{ item.motorcycle.image.url }}" class="w-full h-full object-cover">
+                                {% else %}
+                                    <img src="{% static 'images/5.jpg' %}" class="w-full h-full object-cover">
+                                {% endif %}
+                            </div>
+                            <div>
+                                <p class="font-bold text-sm">{{ item.motorcycle.name }}</p>
+                                <p class="text-gray-500 text-xs">{{ item.motorcycle.get_brand_display }}</p>
+                            </div>
+                        </div>
+                        <span class="text-red-500 font-bold">{{ item.quantity }} قطعة</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-gray-500 text-center py-8">لا يوجد مخزون مسجل</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

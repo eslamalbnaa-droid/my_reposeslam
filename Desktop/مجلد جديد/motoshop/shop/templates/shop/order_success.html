@@ -1,0 +1,41 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}تم الطلب بنجاح - موتور شوب{% endblock %}
+
+{% block content %}
+<section class="min-h-[80vh] flex items-center justify-center">
+    <div class="max-w-lg mx-auto px-4 text-center">
+        <div class="w-24 h-24 bg-green-600/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in">
+            <i class="fas fa-check-circle text-5xl text-green-500"></i>
+        </div>
+
+        <h1 class="text-4xl font-black mb-4 animate-fade-in-up">تم إرسال طلبك بنجاح!</h1>
+        <p class="text-gray-400 mb-8 animate-fade-in-up" style="animation-delay: 0.2s">
+            رقم طلبك: <span class="text-red-500 font-bold">#{{ order.id }}</span><br>
+            سنتواصل معك قريباً لتأكيد الطلب
+        </p>
+
+        <div class="bg-gray-800/30 rounded-2xl p-6 border border-gray-800/50 mb-8 animate-fade-in-up" style="animation-delay: 0.4s">
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div class="text-gray-500">رقم الطلب</div>
+                <div class="font-bold">#{{ order.id }}</div>
+                <div class="text-gray-500">التاريخ</div>
+                <div class="font-bold">{{ order.created_at|date:"Y-m-d" }}</div>
+                <div class="text-gray-500">الحالة</div>
+                <div class="font-bold text-yellow-500">{{ order.get_status_display }}</div>
+                <div class="text-gray-500">الإجمالي</div>
+                <div class="font-bold text-red-500">{{ order.total }} ر.س</div>
+            </div>
+        </div>
+
+        <div class="flex gap-4 justify-center animate-fade-in-up" style="animation-delay: 0.6s">
+            <a href="{% url 'my_orders' %}" class="btn-primary px-8 py-3 rounded-full font-bold">
+                <i class="fas fa-box ml-2"></i>طلباتي
+            </a>
+            <a href="{% url 'home' %}" class="border-2 border-gray-700 hover:border-white px-8 py-3 rounded-full font-bold transition">
+                <i class="fas fa-home ml-2"></i>الرئيسية
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

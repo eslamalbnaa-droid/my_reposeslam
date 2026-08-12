@@ -1,0 +1,193 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}{{ motorcycle.name }} - موتور شوب{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb with bg -->
+<div class="relative bg-[#0d0d14] border-b border-gray-800/30 overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <img src="{% static 'images/6.jpg' %}" class="w-full h-full object-cover" alt="">
+    </div>
+    <div class="max-w-7xl mx-auto px-4 py-4 relative z-10">
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+            <a href="{% url 'home' %}" class="hover:text-red-500 transition">الرئيسية</a>
+            <i class="fas fa-chevron-left text-xs"></i>
+            <a href="{% url 'product_list' %}" class="hover:text-red-500 transition">المتجر</a>
+            <i class="fas fa-chevron-left text-xs"></i>
+            <span class="text-red-500">{{ motorcycle.name }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Product Detail -->
+<section class="py-12">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Images -->
+            <div class="space-y-4">
+                <div class="bg-gray-800/30 rounded-2xl overflow-hidden border border-gray-800/50 aspect-[4/3] relative group">
+                    {% if motorcycle.image %}
+                        <img src="{{ motorcycle.image.url }}" alt="{{ motorcycle.name }}" id="mainImage" class="w-full h-full object-cover transition duration-500">
+                    {% else %}
+                        <img src="{% static 'images/7.jpg' %}" alt="{{ motorcycle.name }}" id="mainImage" class="w-full h-full object-cover transition duration-500">
+                    {% endif %}
+
+                    {% if motorcycle.old_price %}
+                    <div class="absolute top-4 left-4 bg-green-600 text-white px-4 py-2 rounded-full font-bold text-lg shadow-lg">
+                        خصم {{ motorcycle.get_discount_percentage }}%
+                    </div>
+                    {% endif %}
+
+                    <button class="absolute top-4 right-4 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+                        <i class="far fa-heart text-white"></i>
+                    </button>
+                </div>
+
+                {% if images %}
+                <div class="grid grid-cols-4 gap-3">
+                    <button onclick="changeImage('{{ motorcycle.image.url }}')" class="aspect-square rounded-xl overflow-hidden border-2 border-red-500 bg-gray-800/30 hover:opacity-80 transition">
+                        <img src="{{ motorcycle.image.url }}" class="w-full h-full object-cover">
+                    </button>
+                    {% for img in images %}
+                    <button onclick="changeImage('{{ img.image.url }}')" class="aspect-square rounded-xl overflow-hidden border-2 border-transparent hover:border-red-500 bg-gray-800/30 transition">
+                        <img src="{{ img.image.url }}" class="w-full h-full object-cover">
+                    </button>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="aspect-square rounded-xl overflow-hidden border-2 border-red-500">
+                        <img src="{% static 'images/7.jpg' %}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="aspect-square rounded-xl overflow-hidden border-2 border-transparent hover:border-red-500 transition cursor-pointer">
+                        <img src="{% static 'images/8.jpg' %}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="aspect-square rounded-xl overflow-hidden border-2 border-transparent hover:border-red-500 transition cursor-pointer">
+                        <img src="{% static 'images/9.jpg' %}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="aspect-square rounded-xl overflow-hidden border-2 border-transparent hover:border-red-500 transition cursor-pointer">
+                        <img src="{% static 'images/10.jpg' %}" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Info -->
+            <div>
+                <div class="flex items-center gap-3 mb-4 flex-wrap">
+                    <span class="bg-red-600/10 text-red-500 px-3 py-1 rounded-full text-sm font-bold">{{ motorcycle.get_brand_display }}</span>
+                    <span class="bg-gray-800 text-gray-400 px-3 py-1 rounded-full text-sm">{{ motorcycle.model_year }}</span>
+                    {% if motorcycle.is_new %}
+                    <span class="bg-blue-600/10 text-blue-500 px-3 py-1 rounded-full text-sm font-bold"><i class="fas fa-bolt ml-1"></i>جديد</span>
+                    {% endif %}
+                </div>
+
+                <h1 class="text-4xl font-black mb-4">{{ motorcycle.name }}</h1>
+
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="text-3xl font-black text-red-500">{{ motorcycle.price }} ر.س</div>
+                    {% if motorcycle.old_price %}
+                    <div class="text-xl text-gray-500 line-through">{{ motorcycle.old_price }} ر.س</div>
+                    {% endif %}
+                </div>
+
+                <p class="text-gray-400 leading-relaxed mb-8">{{ motorcycle.description }}</p>
+
+                <!-- Specs -->
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="bg-gray-800/30 rounded-xl p-4 border border-gray-800/50">
+                        <div class="text-gray-500 text-sm mb-1"><i class="fas fa-tachometer-alt ml-2 text-red-500/70"></i>سعة المحرك</div>
+                        <div class="font-bold text-lg">{{ motorcycle.engine_cc }} CC</div>
+                    </div>
+                    <div class="bg-gray-800/30 rounded-xl p-4 border border-gray-800/50">
+                        <div class="text-gray-500 text-sm mb-1"><i class="fas fa-horse ml-2 text-red-500/70"></i>القوة الحصانية</div>
+                        <div class="font-bold text-lg">{{ motorcycle.horsepower|default:"غير محدد" }} HP</div>
+                    </div>
+                    <div class="bg-gray-800/30 rounded-xl p-4 border border-gray-800/50">
+                        <div class="text-gray-500 text-sm mb-1"><i class="fas fa-weight-hanging ml-2 text-red-500/70"></i>الوزن</div>
+                        <div class="font-bold text-lg">{{ motorcycle.weight|default:"غير محدد" }} كجم</div>
+                    </div>
+                    <div class="bg-gray-800/30 rounded-xl p-4 border border-gray-800/50">
+                        <div class="text-gray-500 text-sm mb-1"><i class="fas fa-palette ml-2 text-red-500/70"></i>اللون</div>
+                        <div class="font-bold text-lg">{{ motorcycle.color|default:"متعدد" }}</div>
+                    </div>
+                </div>
+
+                <!-- Stock & Actions -->
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full {% if motorcycle.stock > 0 %}bg-green-500 animate-pulse{% else %}bg-red-500{% endif %}"></span>
+                        <span class="text-sm {% if motorcycle.stock > 0 %}text-green-500{% else %}text-red-500{% endif %}">
+                            {% if motorcycle.stock > 0 %}متوفر ({{ motorcycle.stock }} قطعة){% else %}نفذ من المخزون{% endif %}
+                        </span>
+                    </div>
+                    <div class="text-gray-500 text-sm"><i class="fas fa-eye ml-1"></i>{{ motorcycle.views_count }} مشاهدة</div>
+                </div>
+
+                <div class="flex gap-4">
+                    {% if motorcycle.stock > 0 %}
+                    <a href="{% url 'add_to_cart' motorcycle.slug %}" class="flex-1 btn-primary py-4 rounded-xl font-bold text-lg text-center flex items-center justify-center gap-2">
+                        <i class="fas fa-shopping-cart"></i>أضف للسلة
+                    </a>
+                    {% else %}
+                    <button disabled class="flex-1 bg-gray-800 text-gray-500 py-4 rounded-xl font-bold text-lg cursor-not-allowed">
+                        <i class="fas fa-times-circle ml-2"></i>نفذ من المخزون
+                    </button>
+                    {% endif %}
+                    <button class="w-14 h-14 rounded-xl border border-gray-700 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
+                        <i class="far fa-heart text-xl"></i>
+                    </button>
+                    <button class="w-14 h-14 rounded-xl border border-gray-700 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
+                        <i class="fas fa-share-alt text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Products -->
+{% if related %}
+<section class="py-16 bg-[#0d0d14] border-t border-gray-800/30 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-5">
+        <img src="{% static 'images/9.jpg' %}" class="w-full h-full object-cover" alt="">
+    </div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <h2 class="text-3xl font-black mb-8">دراجات مشابهة</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for bike in related %}
+            <div class="bg-gray-800/30 rounded-xl overflow-hidden hover-lift border border-gray-800/30 group">
+                <div class="h-48 relative overflow-hidden">
+                    {% if bike.image %}
+                        <img src="{{ bike.image.url }}" alt="{{ bike.name }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    {% else %}
+                        <img src="{% static 'images/5.jpg' %}" alt="{{ bike.name }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    {% endif %}
+                </div>
+                <div class="p-4">
+                    <p class="text-red-500 text-xs font-bold">{{ bike.get_brand_display }}</p>
+                    <h3 class="font-bold mt-1 mb-2">{{ bike.name }}</h3>
+                    <div class="flex justify-between items-center">
+                        <span class="text-red-500 font-black">{{ bike.price }} ر.س</span>
+                        <a href="{% url 'product_detail' bike.slug %}" class="text-gray-400 hover:text-red-500 transition"><i class="fas fa-arrow-left"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<script>
+function changeImage(src) {
+    const mainImg = document.getElementById('mainImage');
+    mainImg.style.opacity = '0';
+    setTimeout(() => {
+        mainImg.src = src;
+        mainImg.style.opacity = '1';
+    }, 200);
+}
+</script>
+{% endblock %}

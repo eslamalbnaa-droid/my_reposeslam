@@ -1,0 +1,123 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}سلة التسوق - موتور شوب{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="relative py-16 bg-gradient-to-b from-[#0d0d14] to-[#0a0a0f]">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <h1 class="text-4xl font-black mb-4"><i class="fas fa-shopping-cart text-red-500 ml-3"></i>سلة التسوق</h1>
+        <p class="text-gray-400">راجع مشترياتك قبل إتمام الطلب</p>
+    </div>
+</section>
+
+<!-- Cart Content -->
+<section class="py-12">
+    <div class="max-w-5xl mx-auto px-4">
+        {% if cart and cart.items.exists %}
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Cart Items -->
+            <div class="lg:col-span-2 space-y-4">
+                {% for item in cart.items.all %}
+                <div class="bg-gray-800/30 rounded-2xl p-6 border border-gray-800/50 flex gap-6 animate-on-scroll">
+                    <div class="w-32 h-32 bg-gray-800 rounded-xl overflow-hidden flex-shrink-0">
+                        {% if item.motorcycle.image %}
+                            <img src="{{ item.motorcycle.image.url }}" class="w-full h-full object-cover">
+                        {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-4xl">🏍️</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <p class="text-red-500 text-xs font-bold">{{ item.motorcycle.get_brand_display }}</p>
+                                <h3 class="font-bold text-lg">{{ item.motorcycle.name }}</h3>
+                            </div>
+                            <form action="{% url 'remove_from_cart' item.id %}" method="post" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="text-gray-500 hover:text-red-500 transition">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+
+                        <p class="text-gray-500 text-sm mb-4">{{ item.motorcycle.engine_cc }} CC | {{ item.motorcycle.model_year }}</p>
+
+                        <div class="flex justify-between items-center">
+                            <form action="{% url 'update_cart' item.id %}" method="post" class="flex items-center gap-3">
+                                {% csrf_token %}
+                                <div class="flex items-center bg-gray-900 rounded-lg border border-gray-700">
+                                    <button type="button" onclick="this.parentElement.querySelector('input').stepDown(); this.form.submit();" 
+                                        class="w-10 h-10 flex items-center justify-center hover:bg-gray-800 transition text-gray-400">
+                                        <i class="fas fa-minus text-xs"></i>
+                                    </button>
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.motorcycle.stock }}" 
+                                        class="w-12 bg-transparent text-center text-sm font-bold focus:outline-none" readonly>
+                                    <button type="button" onclick="this.parentElement.querySelector('input').stepUp(); this.form.submit();" 
+                                        class="w-10 h-10 flex items-center justify-center hover:bg-gray-800 transition text-gray-400">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="text-left">
+                                <p class="text-gray-500 text-sm">الوحدة: {{ item.motorcycle.price }} ر.س</p>
+                                <p class="text-red-500 font-black text-xl">{{ item.get_subtotal }} ر.س</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-gray-800/30 rounded-2xl p-6 border border-gray-800/50 sticky top-24">
+                    <h3 class="font-bold text-xl mb-6">ملخص الطلب</h3>
+
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-gray-400">
+                            <span>عدد العناصر</span>
+                            <span>{{ cart.get_items_count }}</span>
+                        </div>
+                        <div class="flex justify-between text-gray-400">
+                            <span>المجموع الفرعي</span>
+                            <span>{{ cart.get_total }} ر.س</span>
+                        </div>
+                        <div class="flex justify-between text-gray-400">
+                            <span>الشحن</span>
+                            <span class="text-green-500">مجاني</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-800 pt-4 mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg">الإجمالي</span>
+                            <span class="text-2xl font-black text-red-500">{{ cart.get_total }} ر.س</span>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'checkout' %}" class="block w-full btn-primary py-4 rounded-xl font-bold text-center text-lg">
+                        <i class="fas fa-credit-card ml-2"></i>إتمام الشراء
+                    </a>
+
+                    <a href="{% url 'product_list' %}" class="block text-center text-gray-500 hover:text-red-500 mt-4 text-sm transition">
+                        <i class="fas fa-arrow-right ml-1"></i>مواصلة التسوق
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center py-20">
+            <div class="text-8xl mb-6">🛒</div>
+            <h2 class="text-3xl font-bold mb-4">سلة التسوق فارغة</h2>
+            <p class="text-gray-500 mb-8">لم تقم بإضافة أي دراجات للسلة بعد</p>
+            <a href="{% url 'product_list' %}" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-flex items-center gap-2">
+                <i class="fas fa-motorcycle"></i>تصفح الدراجات
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,21 @@
+/* MotoShop Smart Filter - standalone UI */
+.smart-filter-box{position:relative;padding:14px;border:1px solid rgba(239,68,68,.18);border-radius:14px;background:linear-gradient(145deg,rgba(220,38,38,.09),rgba(17,24,39,.30));}
+.smart-filter-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px;font-weight:800;color:#f3f4f6;font-size:.9rem}
+.smart-filter-title small{font-size:.7rem;color:#9ca3af;font-weight:600}
+.smart-filter-input{display:block;width:100%;padding:.68rem 2.7rem .68rem .8rem;border:1px solid rgba(75,85,99,.8);border-radius:.7rem;background:#111827;color:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
+.smart-filter-input:focus{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.10)}
+.smart-filter-input.smart-loading{border-color:#f59e0b}
+.smart-filter-input.smart-match{border-color:#22c55e}
+.smart-filter-status{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);font-size:.75rem;color:#9ca3af;pointer-events:none}
+.smart-suggestions{margin-top:8px;border:1px solid rgba(75,85,99,.7);border-radius:.8rem;overflow:hidden;background:#0f172a;box-shadow:0 16px 30px rgba(0,0,0,.3)}
+.smart-suggestion{display:flex;width:100%;text-align:right;gap:10px;align-items:center;padding:11px 12px;background:transparent;color:#fff;border:0;border-bottom:1px solid rgba(75,85,99,.35);cursor:pointer}
+.smart-suggestion:last-child{border-bottom:0}
+.smart-suggestion:hover,.smart-suggestion:focus{background:rgba(239,68,68,.10);outline:none}
+.smart-suggestion-icon{display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:rgba(239,68,68,.12);color:#f87171;flex:0 0 auto}
+.smart-suggestion-main{min-width:0;flex:1}
+.smart-suggestion-title{font-weight:800;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.smart-suggestion-meta{margin-top:2px;color:#9ca3af;font-size:.7rem}
+.smart-suggestion-correction{margin-right:auto;color:#fca5a5;font-size:.68rem;white-space:nowrap}
+.smart-filter-help{margin:.45rem 0 0;color:#6b7280;font-size:.68rem;line-height:1.6}
+.smart-empty{padding:12px;color:#9ca3af;font-size:.75rem;text-align:center}
+@media (max-width:767px){.smart-filter-title{align-items:flex-start;flex-direction:column}.smart-suggestion{padding:10px}.smart-suggestion-correction{display:none}}

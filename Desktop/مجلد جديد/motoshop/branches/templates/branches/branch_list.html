@@ -1,0 +1,65 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}فروعنا - موتور شوب{% endblock %}
+
+{% block content %}
+<section class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{% static 'images/20.jpg' %}" class="w-full h-full object-cover opacity-20" alt="">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/80 to-[#0a0a0f]"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+        <h1 class="text-5xl font-black mb-4">فروعنا</h1>
+        <p class="text-gray-400 text-lg">تفضل بزيارة أقرب فرع لك</p>
+    </div>
+</section>
+
+<section class="py-12">
+    <div class="max-w-7xl mx-auto px-4">
+        <!-- City Filter -->
+        <div class="flex flex-wrap gap-3 mb-8 justify-center">
+            <a href="{% url 'branch_list' %}" class="px-5 py-2 rounded-full {% if not request.GET.city %}bg-red-600 text-white{% else %}bg-gray-800 text-gray-400 hover:bg-gray-700{% endif %} transition font-bold text-sm">
+                الكل
+            </a>
+            {% for city in cities %}
+            <a href="?city={{ city }}" class="px-5 py-2 rounded-full {% if request.GET.city == city %}bg-red-600 text-white{% else %}bg-gray-800 text-gray-400 hover:bg-gray-700{% endif %} transition font-bold text-sm">
+                {{ city }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for branch in branches %}
+            <div class="bg-gray-800/30 rounded-2xl overflow-hidden border border-gray-800/50 hover-lift animate-on-scroll">
+                <div class="h-48 relative overflow-hidden">
+                    {% if branch.image %}
+                        <img src="{{ branch.image.url }}" alt="{{ branch.name }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <img src="{% static 'images/21.jpg' %}" alt="{{ branch.name }}" class="w-full h-full object-cover">
+                    {% endif %}
+                    <div class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                        <i class="fas fa-map-marker-alt ml-1"></i>{{ branch.city }}
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">{{ branch.name }}</h3>
+                    <p class="text-gray-400 text-sm mb-4"><i class="fas fa-map-pin ml-2 text-red-500/70"></i>{{ branch.address }}</p>
+                    <div class="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                        <span><i class="fas fa-phone ml-1 text-red-500/70"></i>{{ branch.phone }}</span>
+                        <span><i class="fas fa-clock ml-1 text-red-500/70"></i>{{ branch.opening_hours }}</span>
+                    </div>
+                    <a href="{% url 'branch_detail' branch.slug %}" class="block w-full bg-gray-700 hover:bg-red-600 text-center py-3 rounded-xl font-bold transition">
+                        <i class="fas fa-info-circle ml-2"></i>تفاصيل الفرع
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-3 text-center py-20">
+                <p class="text-gray-500 text-xl">لا توجد فروع متاحة حالياً</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,261 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}المتجر - موتور شوب{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/smart-filter.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/smart-filter.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header with Background Image -->
+<section class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{% static 'images/4.jpg' %}" class="w-full h-full object-cover" alt="خلفية المتجر">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/80 via-[#0a0a0f]/90 to-[#0a0a0f]"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+        <h1 class="text-5xl font-black mb-4">المتجر</h1>
+        <p class="text-gray-400 text-lg">اكتشف تشكيلتنا الواسعة من الدراجات النارية</p>
+        <div class="flex items-center justify-center gap-2 mt-6 text-sm text-gray-500">
+            <a href="{% url 'home' %}" class="hover:text-red-500 transition">الرئيسية</a>
+            <i class="fas fa-chevron-left text-xs"></i>
+            <span class="text-red-500">المتجر</span>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section class="py-12">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar Filters -->
+            <div class="lg:w-72 flex-shrink-0">
+                <div class="bg-gray-800/30 rounded-2xl p-6 border border-gray-800/50 sticky top-24 max-h-[85vh] overflow-y-auto">
+                    <h3 class="font-bold text-lg mb-6 flex items-center">
+                        <i class="fas fa-filter text-red-500 ml-2"></i>تصفية النتائج
+                    </h3>
+
+                    <form method="get" action="{% url 'product_list' %}">
+                        <!-- Normal Search -->
+                        <div class="mb-4">
+                            <label class="text-sm text-gray-400 mb-2 block">البحث العادي</label>
+                            <div class="relative">
+                                <input type="text" name="search" id="normalBikeSearch" value="{{ request.GET.search }}" placeholder="ابحث عن دراجة..."
+                                    class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 pr-10 text-sm focus:outline-none focus:border-red-500 transition">
+                                <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                            </div>
+                        </div>
+
+                        <!-- Smart Filter / Typo Correction -->
+                        <div class="smart-filter-box mb-5" data-smart-filter data-smart-filter-url="{% url 'smart_filter_suggestions' %}">
+                            <div class="smart-filter-title">
+                                <span>✨ البحث الذكي</span>
+                                <small>تصحيح عربي/English</small>
+                            </div>
+                            <div class="relative">
+                                <input type="text" id="smartBikeSearch" autocomplete="off"
+                                    placeholder="مثال: Hnda أو هونداا"
+                                    class="smart-filter-input">
+                                <span class="smart-filter-status" id="smartFilterStatus" aria-live="polite"></span>
+                            </div>
+                            <div id="smartSuggestions" class="smart-suggestions" hidden></div>
+                            <p class="smart-filter-help">اكتب اسمًا ناقصًا أو فيه خطأ وسنعرض أقرب اقتراحات من دراجات مشروعك.</p>
+                        </div>
+
+                        <!-- Brand Filter -->
+                        <div class="mb-5">
+                            <label class="text-sm text-gray-400 mb-2 block">العلامة التجارية</label>
+                            <select name="brand" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-500 transition">
+                                <option value="">جميع العلامات</option>
+                                {% for key, name in brands %}
+                                <option value="{{ key }}" {% if request.GET.brand == key %}selected{% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div class="mb-5">
+                            <label class="text-sm text-gray-400 mb-2 block">التصنيف</label>
+                            <select name="category" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-500 transition">
+                                <option value="">جميع التصنيفات</option>
+                                {% for cat in categories %}
+                                <option value="{{ cat.slug }}" {% if request.GET.category == cat.slug %}selected{% endif %}>{{ cat.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="mb-5">
+                            <label class="text-sm text-gray-400 mb-2 block">نطاق السعر</label>
+                            <div class="flex gap-2">
+                                <input type="number" name="min_price" value="{{ request.GET.min_price }}" placeholder="من" 
+                                    class="w-1/2 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500">
+                                <input type="number" name="max_price" value="{{ request.GET.max_price }}" placeholder="إلى" 
+                                    class="w-1/2 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500">
+                            </div>
+                        </div>
+
+                        <!-- ⭐ CC Filter -->
+                        <div class="mb-5">
+                            <label class="text-sm text-gray-400 mb-2 block">سعة المحرك (CC)</label>
+                            <div class="flex gap-2">
+                                <input type="number" name="min_cc" value="{{ request.GET.min_cc }}" placeholder="من" 
+                                    class="w-1/2 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500">
+                                <input type="number" name="max_cc" value="{{ request.GET.max_cc }}" placeholder="إلى" 
+                                    class="w-1/2 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500">
+                            </div>
+                        </div>
+
+                        <!-- ⭐ Year Filter -->
+                        <div class="mb-5">
+                            <label class="text-sm text-gray-400 mb-2 block">سنة الصنع</label>
+                            <div class="flex gap-2">
+                                <input type="number" name="min_year" value="{{ request.GET.min_year }}" placeholder="من" 
+                                    class="w-1/2 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500">
+                                <input type="number" name="max_year" value="{{ request.GET.max_year }}" placeholder="إلى" 
+                                    class="w-1/2 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500">
+                            </div>
+                        </div>
+
+                        <!-- ⭐ Color Filter -->
+                        <div class="mb-5">
+                            <label class="text-sm text-gray-400 mb-2 block">اللون</label>
+                            <select name="color" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-red-500 transition">
+                                <option value="">جميع الألوان</option>
+                                {% for c in available_colors %}
+                                <option value="{{ c }}" {% if request.GET.color == c %}selected{% endif %}>{{ c }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <button type="submit" class="w-full btn-primary py-2.5 rounded-lg font-bold text-sm">
+                            <i class="fas fa-search ml-2"></i>تطبيق الفلتر
+                        </button>
+
+                        {% if request.GET %}
+                        <a href="{% url 'product_list' %}" class="block text-center text-gray-500 hover:text-red-500 text-sm mt-3 transition">
+                            <i class="fas fa-times ml-1"></i>إعادة ضبط
+                        </a>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="flex-1">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+                    <p class="text-gray-400 text-sm">
+                        <span class="text-red-500 font-bold">{{ total_count }}</span> دراجة متوفرة
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <span class="text-gray-400 text-sm">ترتيب حسب:</span>
+                        <select onchange="window.location.href=this.value" class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-red-500">
+                            <option value="{% url 'product_list' %}{% if request.GET %}?{% for key, value in request.GET.items %}{% if key != 'sort' %}{{ key }}={{ value }}&{% endif %}{% endfor %}{% endif %}">الافتراضي</option>
+                            <option value="{% url 'product_list' %}?sort=price_asc{% if request.GET %}{% for key, value in request.GET.items %}{% if key != 'sort' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}">السعر: من الأقل</option>
+                            <option value="{% url 'product_list' %}?sort=price_desc{% if request.GET %}{% for key, value in request.GET.items %}{% if key != 'sort' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}">السعر: من الأعلى</option>
+                            <option value="{% url 'product_list' %}?sort=newest{% if request.GET %}{% for key, value in request.GET.items %}{% if key != 'sort' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}">الأحدث</option>
+                            <option value="{% url 'product_list' %}?sort=cc_asc{% if request.GET %}{% for key, value in request.GET.items %}{% if key != 'sort' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}">CC: من الأقل</option>
+                            <option value="{% url 'product_list' %}?sort=cc_desc{% if request.GET %}{% for key, value in request.GET.items %}{% if key != 'sort' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}">CC: من الأعلى</option>
+                            <option value="{% url 'product_list' %}?sort=year_desc{% if request.GET %}{% for key, value in request.GET.items %}{% if key != 'sort' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}">السنة: الأحدث</option>
+                        </select>
+                    </div>
+                </div>
+
+                {% if page_obj %}
+                <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {% for bike in page_obj %}
+                    <div class="bg-gradient-to-b from-gray-800/50 to-gray-900/50 rounded-2xl overflow-hidden card-hover border border-gray-800/50 group animate-on-scroll">
+                        <div class="h-56 relative overflow-hidden">
+                            {% if bike.image %}
+                                <img src="{{ bike.image.url }}" alt="{{ bike.name }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            {% else %}
+                                <img src="{% static 'images/5.jpg' %}" alt="{{ bike.name }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            {% endif %}
+
+                            <div class="absolute top-3 right-3 flex flex-col gap-2">
+                                {% if bike.is_featured %}
+                                <span class="bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold"><i class="fas fa-star ml-1"></i>مميز</span>
+                                {% endif %}
+                                {% if bike.old_price %}
+                                <span class="bg-green-600 text-white px-2 py-1 rounded-full text-xs font-bold">-{{ bike.get_discount_percentage }}%</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                                <a href="{% url 'product_detail' bike.slug %}" class="bg-white text-gray-900 px-6 py-3 rounded-full font-bold hover:scale-105 transition transform">
+                                    <i class="fas fa-eye ml-2"></i>عرض التفاصيل
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <p class="text-red-500 text-xs font-bold">{{ bike.get_brand_display }}</p>
+                                    <h3 class="font-bold text-lg group-hover:text-red-500 transition">{{ bike.name }}</h3>
+                                </div>
+                                <div class="text-left">
+                                    {% if bike.old_price %}<p class="text-gray-500 text-sm line-through">{{ bike.old_price }} ر.س</p>{% endif %}
+                                    <p class="text-red-500 font-black text-lg">{{ bike.price }} ر.س</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-800/50">
+                                <div class="flex gap-3 text-xs text-gray-500">
+                                    <span><i class="fas fa-tachometer-alt text-red-500/70"></i> {{ bike.engine_cc }}CC</span>
+                                    <span><i class="fas fa-calendar text-red-500/70"></i> {{ bike.model_year }}</span>
+                                </div>
+                                <span class="text-xs {% if bike.stock > 0 %}text-green-500{% else %}text-red-500{% endif %}">
+                                    {% if bike.stock > 0 %}<i class="fas fa-check-circle ml-1"></i>متوفر{% else %}<i class="fas fa-times-circle ml-1"></i>نفذ{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if page_obj.has_other_pages %}
+                <div class="flex justify-center mt-12">
+                    <div class="flex items-center gap-2">
+                        {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                            class="w-10 h-10 rounded-lg bg-gray-800 hover:bg-red-600 flex items-center justify-center transition"><i class="fas fa-chevron-right"></i></a>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <span class="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center font-bold">{{ num }}</span>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                                class="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                            class="w-10 h-10 rounded-lg bg-gray-800 hover:bg-red-600 flex items-center justify-center transition"><i class="fas fa-chevron-left"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <div class="text-center py-20">
+                    <img src="{% static 'images/5.jpg' %}" class="w-32 h-32 mx-auto rounded-full object-cover mb-6 opacity-30">
+                    <h3 class="text-2xl font-bold mb-2">لا توجد نتائج</h3>
+                    <p class="text-gray-500">جرب تغيير معايير البحث أو الفلتر</p>
+                    <a href="{% url 'product_list' %}" class="inline-block mt-6 btn-primary px-6 py-3 rounded-full font-bold">
+                        <i class="fas fa-undo ml-2"></i>عرض جميع الدراجات
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}تعديل الملف الشخصي - موتور شوب{% endblock %}
+
+{% block content %}
+<section class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{% static 'images/4.jpg' %}" class="w-full h-full object-cover opacity-20" alt="">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/80 to-[#0a0a0f]"></div>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 relative z-10">
+        <div class="bg-gray-800/30 backdrop-blur-sm rounded-2xl p-8 border border-gray-800/50">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-black">تعديل الملف الشخصي</h1>
+                <p class="text-gray-400 text-sm mt-2">حدث معلوماتك الشخصية</p>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="space-y-5">
+                {% csrf_token %}
+                {% for field in form %}
+                <div>
+                    <label class="block text-sm font-bold mb-2">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="flex gap-4">
+                    <button type="submit" class="flex-1 btn-primary py-4 rounded-xl font-bold text-lg">
+                        <i class="fas fa-save ml-2"></i>حفظ التغييرات
+                    </button>
+                    <a href="{% url 'profile' %}" class="px-6 py-4 rounded-xl font-bold border border-gray-700 hover:border-white transition">
+                        إلغاء
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

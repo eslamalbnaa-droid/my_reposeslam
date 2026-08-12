@@ -1,0 +1,92 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}الملف الشخصي - موتور شوب{% endblock %}
+
+{% block content %}
+<section class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{% static 'images/3.jpg' %}" class="w-full h-full object-cover opacity-20" alt="">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/80 to-[#0a0a0f]"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 relative z-10">
+        <div class="bg-gray-800/30 backdrop-blur-sm rounded-2xl border border-gray-800/50 overflow-hidden">
+            <!-- Header -->
+            <div class="relative h-48 bg-gradient-to-r from-red-900/30 to-orange-900/30">
+                <div class="absolute -bottom-16 left-8 flex items-end">
+                    <div class="w-32 h-32 rounded-2xl bg-gray-800 border-4 border-[#0a0a0f] overflow-hidden">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" class="w-full h-full object-cover" alt="{{ user.username }}">
+                        {% else %}
+                            <div class="w-full h-full flex items-center justify-center bg-red-600/20 text-4xl">👤</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-4 mr-4">
+                        <h1 class="text-2xl font-black">{{ user.get_full_name|default:user.username }}</h1>
+                        <p class="text-gray-400 text-sm">{{ user.email }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="pt-20 p-8">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 flex items-center">
+                            <i class="fas fa-user text-red-500 ml-2"></i>المعلومات الشخصية
+                        </h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between py-2 border-b border-gray-800">
+                                <span class="text-gray-500">اسم المستخدم</span>
+                                <span class="font-bold">{{ user.username }}</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-800">
+                                <span class="text-gray-500">رقم الهاتف</span>
+                                <span class="font-bold">{{ user.phone|default:"غير محدد" }}</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-800">
+                                <span class="text-gray-500">المدينة</span>
+                                <span class="font-bold">{{ user.city|default:"غير محدد" }}</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-800">
+                                <span class="text-gray-500">تاريخ الانضمام</span>
+                                <span class="font-bold">{{ user.date_joined|date:"Y-m-d" }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 flex items-center">
+                            <i class="fas fa-box text-red-500 ml-2"></i>آخر الطلبات
+                        </h3>
+                        {% if orders %}
+                        <div class="space-y-3">
+                            {% for order in orders %}
+                            <div class="bg-gray-900/50 rounded-xl p-4 border border-gray-800/50">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold">طلب #{{ order.id }}</span>
+                                    <span class="text-red-500 font-bold">{{ order.total }} ر.س</span>
+                                </div>
+                                <p class="text-gray-500 text-xs mt-1">{{ order.created_at|date:"Y-m-d" }} - {{ order.get_status_display }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-gray-500 text-center py-8">لا توجد طلبات بعد</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-800/50">
+                    <a href="{% url 'edit_profile' %}" class="btn-primary px-6 py-3 rounded-xl font-bold inline-flex items-center gap-2">
+                        <i class="fas fa-edit"></i>تعديل الملف الشخصي
+                    </a>
+                    <a href="{% url 'my_orders' %}" class="mr-3 border border-gray-700 hover:border-white px-6 py-3 rounded-xl font-bold transition inline-flex items-center gap-2">
+                        <i class="fas fa-box"></i>جميع الطلبات
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

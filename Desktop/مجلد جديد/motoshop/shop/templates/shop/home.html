@@ -1,0 +1,357 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}موتور شوب - الرئيسية{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-bg-1 { background-image: url("{% static 'images/1.jpg' %}"); }
+.hero-bg-2 { background-image: url("{% static 'images/2.jpg' %}"); }
+.hero-bg-3 { background-image: url("{% static 'images/3.jpg' %}"); }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Image Slider -->
+<section class="min-h-screen flex items-center relative overflow-hidden">
+    <div id="heroSlider" class="absolute inset-0">
+        <div class="hero-bg-1 absolute inset-0 bg-cover bg-center transition-all duration-1000 opacity-100 scale-100"></div>
+        <div class="hero-bg-2 absolute inset-0 bg-cover bg-center transition-all duration-1000 opacity-0 scale-110"></div>
+        <div class="hero-bg-3 absolute inset-0 bg-cover bg-center transition-all duration-1000 opacity-0 scale-110"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#0a0a0f]"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 w-full">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="text-center lg:text-right">
+                <div class="inline-flex items-center space-x-2 space-x-reverse bg-red-600/20 border border-red-500/30 rounded-full px-5 py-2 mb-6 animate-fade-in-up backdrop-blur-sm">
+                    <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                    <span class="text-red-400 text-sm font-bold">🏍️ وجهتك الأولى للدراجات النارية</span>
+                </div>
+
+                <h1 class="text-5xl md:text-7xl font-black mt-4 mb-6 leading-tight animate-fade-in-up" style="animation-delay: 0.2s">
+                    اكتشف قوة <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">الدراجات النارية</span>
+                </h1>
+
+                <p class="text-gray-300 text-lg mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0 animate-fade-in-up" style="animation-delay: 0.4s">
+                    تشكيلة واسعة من أحدث الدراجات النارية العالمية بأسعار تنافسية وضمان شامل. اختر دراجتك المثالية اليوم!
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up" style="animation-delay: 0.6s">
+                    <a href="{% url 'product_list' %}" class="btn-primary px-8 py-4 rounded-full font-bold text-lg flex items-center justify-center gap-2">
+                        <i class="fas fa-shopping-bag"></i>تسوق الآن
+                    </a>
+                    <a href="{% url 'about' %}" class="bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 px-8 py-4 rounded-full font-bold text-lg transition flex items-center justify-center gap-2">
+                        <i class="fas fa-play-circle"></i>اعرف المزيد
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-3 gap-6 mt-12 animate-fade-in-up" style="animation-delay: 0.8s">
+                    <div class="text-center bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+                        <div class="text-3xl font-black text-gradient">500+</div>
+                        <div class="text-gray-400 text-sm mt-1">دراجة متوفرة</div>
+                    </div>
+                    <div class="text-center bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+                        <div class="text-3xl font-black text-gradient">10K+</div>
+                        <div class="text-gray-400 text-sm mt-1">عميل سعيد</div>
+                    </div>
+                    <div class="text-center bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+                        <div class="text-3xl font-black text-gradient">50+</div>
+                        <div class="text-gray-400 text-sm mt-1">علامة تجارية</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden lg:block relative animate-slide-in-right">
+                <div class="relative">
+                    <img src="{% static 'images/2.jpg' %}" alt="دراجة نارية" class="w-full rounded-3xl shadow-2xl border border-gray-700/50 animate-float">
+                    <div class="absolute -bottom-6 -left-6 bg-red-600 text-white rounded-2xl p-5 shadow-xl">
+                        <div class="text-2xl font-black">2025</div>
+                        <div class="text-sm">أحدث الموديلات</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+        <button onclick="goToSlide(0)" class="slide-dot w-12 h-1 rounded-full bg-white/50 hover:bg-red-500 transition"></button>
+        <button onclick="goToSlide(1)" class="slide-dot w-12 h-1 rounded-full bg-white/50 hover:bg-red-500 transition"></button>
+        <button onclick="goToSlide(2)" class="slide-dot w-12 h-1 rounded-full bg-white/50 hover:bg-red-500 transition"></button>
+    </div>
+</section>
+
+<!-- Brands Section -->
+<section class="py-16 bg-[#0d0d14] border-y border-gray-800/30 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-30" style="background-image: url('{% static 'images/3.jpg' %}'); background-size: cover; background-position: center; filter: grayscale(100%);"></div>
+    <div class="absolute inset-0 bg-[#0d0d14]/90"></div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <p class="text-center text-gray-500 text-sm mb-8">العلامات التجارية الموثوقة</p>
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60">
+            {% for key, name in brands.items %}
+            <div class="text-2xl font-black text-gray-400 hover:text-white transition cursor-pointer hover:scale-110 transform duration-300">{{ name }}</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="py-24 relative">
+    <div class="absolute inset-0 opacity-20">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-red-600/10 rounded-full filter blur-3xl"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="text-center mb-16">
+            <span class="text-red-500 font-bold tracking-widest text-sm">🔥 الأكثر مبيعاً</span>
+            <h2 class="text-4xl md:text-5xl font-black mt-4 mb-4">الدراجات المميزة</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">اختر من تشكيلتنا المميزة من الدراجات النارية الفاخرة بأفضل الأسعار</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for bike in featured %}
+            <div class="bg-gradient-to-b from-gray-800/50 to-gray-900/50 rounded-2xl overflow-hidden card-hover border border-gray-800/50 group animate-on-scroll">
+                <div class="h-64 relative overflow-hidden">
+                    {% if bike.image %}
+                        <img src="{{ bike.image.url }}" alt="{{ bike.name }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    {% else %}
+                        <img src="{% static 'images/5.jpg' %}" alt="{{ bike.name }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    {% endif %}
+
+                    <div class="absolute top-4 right-4 flex flex-col gap-2">
+                        {% if bike.is_featured %}
+                        <span class="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg"><i class="fas fa-star ml-1"></i>مميز</span>
+                        {% endif %}
+                        {% if bike.old_price %}
+                        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">خصم {{ bike.get_discount_percentage }}%</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="absolute bottom-4 left-4 right-4 flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition duration-300 transform translate-y-4 group-hover:translate-y-0">
+                        <a href="{% url 'product_detail' bike.slug %}" class="bg-white/90 text-gray-900 px-4 py-2 rounded-full text-sm font-bold hover:bg-white transition">
+                            <i class="fas fa-eye ml-1"></i>عرض التفاصيل
+                        </a>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <p class="text-red-500 text-xs font-bold mb-1">{{ bike.get_brand_display }}</p>
+                            <h3 class="text-xl font-bold group-hover:text-red-500 transition">{{ bike.name }}</h3>
+                        </div>
+                        <div class="text-left">
+                            {% if bike.old_price %}<p class="text-gray-500 text-sm line-through">{{ bike.old_price }} ر.س</p>{% endif %}
+                            <p class="text-red-500 font-black text-xl">{{ bike.price }} ر.س</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 text-sm text-gray-500 mt-4 pt-4 border-t border-gray-800/50">
+                        <span><i class="fas fa-tachometer-alt ml-1 text-red-500/70"></i>{{ bike.engine_cc }} CC</span>
+                        <span><i class="fas fa-calendar ml-1 text-red-500/70"></i>{{ bike.model_year }}</span>
+                        <span><i class="fas fa-palette ml-1 text-red-500/70"></i>{{ bike.color|default:"متعدد" }}</span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-3 text-center py-20">
+                <img src="{% static 'images/5.jpg' %}" class="w-32 h-32 mx-auto rounded-full object-cover mb-4 opacity-50">
+                <p class="text-gray-500 text-xl">لا توجد دراجات مميزة حالياً</p>
+                <a href="{% url 'product_list' %}" class="inline-block mt-4 text-red-500 font-bold hover:underline">تصفح جميع الدراجات</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="{% url 'product_list' %}" class="inline-flex items-center gap-2 text-red-500 font-bold hover:gap-4 transition-all duration-300">
+                عرض جميع الدراجات <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Banner Section -->
+<section class="py-20 relative overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{% static 'images/22.jpg' %}" class="w-full h-full object-cover" alt="خلفية">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0f] via-[#0a0a0f]/80 to-transparent"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="text-red-500 font-bold tracking-widest text-sm">⚡ عرض محدود</span>
+                <h2 class="text-4xl md:text-5xl font-black mt-4 mb-6">دراجات رياضية بأداء خارق</h2>
+                <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                    اكتشف تشكيلتنا الحصرية من الدراجات الرياضية عالية الأداء. محركات قوية، تصميم أنيق، وتجربة قيادة لا تُنسى.
+                </p>
+                <a href="{% url 'product_list' %}" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-flex items-center gap-2">
+                    <i class="fas fa-fire"></i>اكتشف المزيد
+                </a>
+            </div>
+            <div class="hidden md:block">
+                <img src="{% static 'images/22.jpg' %}" alt="دراجة رياضية" class="rounded-3xl shadow-2xl border border-gray-700/50 transform hover:scale-105 transition duration-500">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Products -->
+<section class="py-24 bg-[#0d0d14]">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <span class="text-red-500 font-bold tracking-widest text-sm">🆕 وصل حديثاً</span>
+                <h2 class="text-4xl font-black mt-4">أحدث الدراجات</h2>
+            </div>
+            <a href="{% url 'product_list' %}?sort=newest" class="hidden md:flex items-center gap-2 text-red-500 font-bold hover:gap-4 transition-all">
+                عرض الكل <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for bike in latest %}
+            <div class="bg-gray-800/30 rounded-xl overflow-hidden hover-lift border border-gray-800/30 group animate-on-scroll">
+                <div class="h-48 relative overflow-hidden">
+                    {% if bike.image %}
+                        <img src="{{ bike.image.url }}" alt="{{ bike.name }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    {% else %}
+                        <img src="{% static 'images/5.jpg' %}" alt="{{ bike.name }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    {% endif %}
+                    {% if bike.is_new %}
+                    <span class="absolute top-3 right-3 bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-bold"><i class="fas fa-bolt ml-1"></i>جديد</span>
+                    {% endif %}
+                </div>
+                <div class="p-4">
+                    <p class="text-red-500 text-xs font-bold">{{ bike.get_brand_display }}</p>
+                    <h3 class="font-bold mt-1 mb-2 group-hover:text-red-500 transition">{{ bike.name }}</h3>
+                    <div class="flex justify-between items-center">
+                        <span class="text-red-500 font-black">{{ bike.price }} ر.س</span>
+                        <a href="{% url 'product_detail' bike.slug %}" class="text-gray-400 hover:text-red-500 transition"><i class="fas fa-arrow-left"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-4 text-center py-20 text-gray-500">
+                <img src="{% static 'images/5.jpg' %}" class="w-24 h-24 mx-auto rounded-full object-cover mb-4 opacity-30">
+                لا توجد دراجات جديدة حالياً
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-24 relative overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{% static 'images/1.jpg' %}" class="w-full h-full object-cover opacity-5" alt="خلفية">
+    </div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="text-center mb-16">
+            <span class="text-red-500 font-bold tracking-widest text-sm">✨ لماذا نحن</span>
+            <h2 class="text-4xl font-black mt-4 mb-4">مميزات المتجر</h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="glass-card rounded-2xl p-8 text-center hover-lift animate-on-scroll">
+                <div class="w-16 h-16 bg-red-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-shield-alt text-3xl text-red-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">ضمان شامل</h3>
+                <p class="text-gray-400 text-sm">ضمان لمدة سنتين على جميع الدراجات النارية مع صيانة مجانية</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center hover-lift animate-on-scroll">
+                <div class="w-16 h-16 bg-orange-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-shipping-fast text-3xl text-orange-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">شحن سريع</h3>
+                <p class="text-gray-400 text-sm">توصيل خلال 24-48 ساعة لجميع المناطق مع تتبع الشحنة</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center hover-lift animate-on-scroll">
+                <div class="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-headset text-3xl text-blue-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">دعم 24/7</h3>
+                <p class="text-gray-400 text-sm">فريق دعم فني متخصص جاهز لمساعدتك على مدار الساعة</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center hover-lift animate-on-scroll">
+                <div class="w-16 h-16 bg-green-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-undo text-3xl text-green-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">إرجاع سهل</h3>
+                <p class="text-gray-400 text-sm">سياسة إرجاع مرنة خلال 14 يوم مع استرداد كامل المبلغ</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Section -->
+<section class="py-20 bg-[#0d0d14]">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <span class="text-red-500 font-bold tracking-widest text-sm">📸 معرض الصور</span>
+            <h2 class="text-4xl font-black mt-4">لحظات لا تُنسى</h2>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="aspect-square rounded-2xl overflow-hidden group animate-on-scroll">
+                <img src="{% static 'images/15.jpg' %}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="صورة 1">
+            </div>
+            <div class="aspect-square rounded-2xl overflow-hidden group animate-on-scroll md:col-span-2 md:row-span-2">
+                <img src="{% static 'images/16.jpg' %}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="صورة 2">
+            </div>
+            <div class="aspect-square rounded-2xl overflow-hidden group animate-on-scroll">
+                <img src="{% static 'images/17.jpg' %}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="صورة 3">
+            </div>
+            <div class="aspect-square rounded-2xl overflow-hidden group animate-on-scroll">
+                <img src="{% static 'images/18.jpg' %}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="صورة 4">
+            </div>
+            <div class="aspect-square rounded-2xl overflow-hidden group animate-on-scroll">
+                <img src="{% static 'images/19.jpg' %}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="صورة 5">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-24 relative overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{% static 'images/23.jpg' %}" class="w-full h-full object-cover" alt="خلفية CTA">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0f]/95 via-[#0a0a0f]/80 to-[#0a0a0f]/60"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+        <h2 class="text-4xl md:text-6xl font-black mb-6">جاهز لقيادة <span class="text-gradient">دراجتك المثالية؟</span></h2>
+        <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto">انضم لآلاف العملاء السعداء واكتشف تشكيلتنا الواسعة من الدراجات النارية الفاخرة</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'product_list' %}" class="btn-primary px-10 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center gap-2">
+                <i class="fas fa-motorcycle"></i>تصفح الدراجات
+            </a>
+            <a href="{% url 'contact' %}" class="bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 px-10 py-4 rounded-full font-bold text-lg transition inline-flex items-center justify-center gap-2">
+                <i class="fas fa-phone"></i>تواصل معنا
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let slides = document.querySelectorAll('#heroSlider > div:not(.absolute)');
+let dots = document.querySelectorAll('.slide-dot');
+let current = 0;
+
+function goToSlide(index) {
+    slides[current].classList.remove('opacity-100', 'scale-100');
+    slides[current].classList.add('opacity-0', 'scale-110');
+    dots[current].classList.remove('bg-red-500');
+    dots[current].classList.add('bg-white/50');
+    current = index;
+    slides[current].classList.remove('opacity-0', 'scale-110');
+    slides[current].classList.add('opacity-100', 'scale-100');
+    dots[current].classList.remove('bg-white/50');
+    dots[current].classList.add('bg-red-500');
+}
+
+dots[0].classList.add('bg-red-500');
+dots[0].classList.remove('bg-white/50');
+setInterval(() => { goToSlide((current + 1) % slides.length); }, 6000);
+</script>
+{% endblock %}

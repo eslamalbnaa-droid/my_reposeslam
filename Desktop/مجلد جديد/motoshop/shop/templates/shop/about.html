@@ -1,0 +1,176 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %} عن موقعنا  - موتور شوب{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{% static 'images/23.jpg' %}" class="w-full h-full object-cover" alt="خلفية من نحن">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/70 via-[#0a0a0f]/90 to-[#0a0a0f]"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+        <h1 class="text-5xl md:text-6xl font-black mb-6">عن  موقعنا </h1>
+        <p class="text-gray-400 text-lg leading-relaxed">
+            موتور شوب هو وجهتك الأولى لشراء الدراجات النارية الفاخرة في   اليمن السعيد .
+        </p>
+    </div>
+</section>
+
+<!-- Story -->
+<section class="py-20">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="animate-on-scroll">
+                <span class="text-red-500 font-bold tracking-widest text-sm">📖 قصتنا</span>
+                <h2 class="text-4xl font-black mt-4 mb-6">رحلة من الشغف إلى الاحتراف</h2>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    بدأنا رحلتنا في عام 2020 من شغف عميق بالدراجات النارية. كان هدفنا واضحاً: توفير أفضل الدراجات العالمية للمحبين في اليمن السعيد بأسعار منافسة وجودة لا تُضاهى.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    اليوم، أصبحنا واحدة من أكبر منصات بيع الدراجات النارية في المنطقة، نخدم آلاف العملاء ونقدم تشكيلة واسعة تشمل أكثر من 50 علامة تجارية عالمية.
+                </p>
+                <p class="text-gray-400 leading-relaxed">
+                    نؤمن بأن كل راكب يستحق الدراجة المثالية، ولذلك نقدم خدمة استشارية متخصصة لمساعدتك في اختيار الدراجة التي تناسب احتياجاتك وميزانيتك.
+                </p>
+            </div>
+            <div class="relative animate-on-scroll">
+                <div class="aspect-[4/3] rounded-3xl overflow-hidden border border-gray-800/50 shadow-2xl">
+                    <img src="{% static 'images/7.jpg' %}" class="w-full h-full object-cover" alt="قصتنا">
+                </div>
+                <div class="absolute -bottom-6 -left-6 bg-red-600 text-white rounded-2xl p-6 shadow-2xl">
+                    <div class="text-3xl font-black">6+</div>
+                    <div class="text-sm">سنوات من الخبرة</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values -->
+<section class="py-20 bg-[#0d0d14] relative overflow-hidden">
+    <div class="absolute inset-0 opacity-5">
+        <img src="{% static 'images/12.jpg' %}" class="w-full h-full object-cover" alt="">
+    </div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="text-center mb-16">
+            <span class="text-red-500 font-bold tracking-widest text-sm">💎 قيمنا</span>
+            <h2 class="text-4xl font-black mt-4">ما يميزنا</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="glass-card rounded-2xl p-8 text-center hover-lift animate-on-scroll">
+                <div class="w-16 h-16 bg-red-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-award text-3xl text-red-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">الجودة أولاً</h3>
+                <p class="text-gray-400 text-sm">نختار كل دراجة بعناية فائقة ونضمن جودتها قبل عرضها للبيع</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center hover-lift animate-on-scroll">
+                <div class="w-16 h-16 bg-orange-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-hand-holding-usd text-3xl text-orange-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">أسعار تنافسية</h3>
+                <p class="text-gray-400 text-sm">نقدم أفضل الأسعار في السوق مع ضمان أفضل قيمة مقابل السعر</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center hover-lift animate-on-scroll">
+                <div class="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-users text-3xl text-blue-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">خدمة عملاء متميزة</h3>
+                <p class="text-gray-400 text-sm">فريق متخصص جاهز لمساعدتك على مدار الساعة</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="py-20 relative overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{% static 'images/13.jpg' %}" class="w-full h-full object-cover opacity-10" alt="">
+    </div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center animate-on-scroll">
+                <div class="text-5xl font-black text-gradient mb-2">500+</div>
+                <div class="text-gray-500">دراجة متوفرة</div>
+            </div>
+            <div class="text-center animate-on-scroll">
+                <div class="text-5xl font-black text-gradient mb-2">10K+</div>
+                <div class="text-gray-500">عميل سعيد</div>
+            </div>
+            <div class="text-center animate-on-scroll">
+                <div class="text-5xl font-black text-gradient mb-2">50+</div>
+                <div class="text-gray-500">علامة تجارية</div>
+            </div>
+            <div class="text-center animate-on-scroll">
+                <div class="text-5xl font-black text-gradient mb-2">99%</div>
+                <div class="text-gray-500">رضا العملاء</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team -->
+<section class="py-20 bg-[#0d0d14]">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16">
+            <span class="text-red-500 font-bold tracking-widest text-sm"> فريقنا</span>
+            <h2 class="text-4xl font-black mt-4">الفريق المتميز</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="glass-card rounded-2xl p-8 text-center hover-lift animate-on-scroll">
+                <div class="w-24 h-24 rounded-full mx-auto mb-6 overflow-hidden border-2 border-red-500/30">
+                    <img src="{% static 'images/24.jpg' %}" class="w-full h-full object-cover" alt="أحمد">
+                </div>
+                <h3 class="text-xl font-bold">أحمد الحاشدي</h3>
+                <p class="text-red-500 text-sm mb-3">المؤسس والمدير التنفيذي</p>
+                <p class="text-gray-400 text-sm">خبرة 15 عاماً في مجال الدراجات النارية</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center hover-lift animate-on-scroll">
+                <div class="w-24 h-24 rounded-full mx-auto mb-6 overflow-hidden border-2 border-red-500/30">
+                    <img src="{% static 'images/26.jpg' %}" class="w-full h-full object-cover" alt="سارة">
+                </div>
+                <h3 class="text-xl font-bold">اسلام البنا </h3>
+                <p class="text-red-500 text-sm mb-3">مديرة العمليات</p>
+                <p class="text-gray-400 text-sm">متخصصة في إدارة سلاسل الإمداد والتوزيع</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center hover-lift animate-on-scroll">
+                <div class="w-24 h-24 rounded-full mx-auto mb-6 overflow-hidden border-2 border-red-500/30">
+                    <img src="{% static 'images/25.jpg' %}" class="w-full h-full object-cover" alt="خالد">
+                </div>
+                <h3 class="text-xl font-bold">خالد القيفي</h3>
+                <p class="text-red-500 text-sm mb-3">رئيس قسم الصيانة</p>
+                <p class="text-gray-400 text-sm">فني معتمد من أكبر الشركات العالمية</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Showroom Gallery -->
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <span class="text-red-500 font-bold tracking-widest text-sm"> صالة العرض</span>
+            <h2 class="text-4xl font-black mt-4">تفضل بزيارتنا</h2>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden group">
+                <img src="{% static 'images/15.jpg' %}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="صالة 1">
+            </div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden group">
+                <img src="{% static 'images/22.jpg' %}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="صالة 2">
+            </div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden group">
+                <img src="{% static 'images/7.jpg' %}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="صالة 3">
+            </div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden group md:col-span-2">
+                <img src="{% static 'images/18.jpg' %}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="صالة 4">
+            </div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden group">
+                <img src="{% static 'images/5.jpg' %}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="صالة 5">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
