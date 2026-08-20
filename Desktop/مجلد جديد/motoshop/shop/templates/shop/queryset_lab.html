@@ -1,0 +1,68 @@
+{% extends 'shop/base.html' %}
+{% block title %}واجب هندسة البرمجيات - QuerySet{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="mb-8">
+        <h1 class="text-3xl font-black text-white mb-2">تطبيق عملي لمتطلبات هندسة البرمجيات</h1>
+        <p class="text-gray-400">العلاقات: One-to-One و Many-to-Many — ودوال QuerySet متعددة.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5 mb-8">
+        <div class="glass-card rounded-2xl p-5">
+            <div class="text-gray-400 text-sm">إجمالي الدراجات</div>
+            <div class="text-3xl font-black text-white mt-2">{{ report.total_count }}</div>
+        </div>
+        <div class="glass-card rounded-2xl p-5">
+            <div class="text-gray-400 text-sm">المتوفرة في المخزون</div>
+            <div class="text-3xl font-black text-green-400 mt-2">{{ report.available_count }}</div>
+        </div>
+        <div class="glass-card rounded-2xl p-5">
+            <div class="text-gray-400 text-sm">هل يوجد مخزون؟</div>
+            <div class="text-3xl font-black text-white mt-2">{% if report.has_stock %}نعم{% else %}لا{% endif %}</div>
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+        <section class="glass-card rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-white mb-4">إحصائيات العلامات التجارية</h2>
+            <div class="space-y-3">
+                {% for item in report.brand_stats %}
+                <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                    <span class="text-gray-300">{{ item.brand }}</span>
+                    <span class="text-red-400">{{ item.total }} دراجة</span>
+                </div>
+                {% empty %}
+                <p class="text-gray-500">لا توجد بيانات.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="glass-card rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-white mb-4">ملخص الأسعار</h2>
+            <div class="space-y-3 text-gray-300">
+                <p>المتوسط: <strong>{{ report.price_summary.average_price|default:'0' }}</strong></p>
+                <p>الأدنى: <strong>{{ report.price_summary.minimum_price|default:'0' }}</strong></p>
+                <p>الأعلى: <strong>{{ report.price_summary.maximum_price|default:'0' }}</strong></p>
+            </div>
+        </section>
+
+        <section class="glass-card rounded-2xl p-6 lg:col-span-2">
+            <h2 class="text-xl font-bold text-white mb-4">دوال QuerySet المستخدمة</h2>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">all()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">filter()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">exclude()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">order_by()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">values()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">annotate()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">distinct()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">count()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">exists()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">aggregate()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">select_related()</code>
+                <code class="px-4 py-3 rounded-xl bg-black/30 text-red-300">prefetch_related()</code>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Motorcycle, MotorcycleImage, Cart, CartItem, Order, OrderItem
+from .models import Category, Motorcycle, MotorcycleImage, Favorite, Cart, CartItem, Order, OrderItem
 
 
 class MotorcycleImageInline(admin.TabularInline):
@@ -24,6 +24,12 @@ class MotorcycleAdmin(admin.ModelAdmin):
     inlines = [MotorcycleImageInline]
     date_hierarchy = 'created_at'
 
+
+@admin.register(Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display = ['user', 'motorcycle', 'created_at']
+    search_fields = ['user__username', 'motorcycle__name']
+    list_filter = ['created_at']
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):

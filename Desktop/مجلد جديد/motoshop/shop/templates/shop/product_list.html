@@ -3,14 +3,6 @@
 
 {% block title %}المتجر - موتور شوب{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/smart-filter.css' %}">
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'js/smart-filter.js' %}" defer></script>
-{% endblock %}
-
 {% block content %}
 <!-- Page Header with Background Image -->
 <section class="relative py-20 overflow-hidden">
@@ -41,30 +33,14 @@
                     </h3>
 
                     <form method="get" action="{% url 'product_list' %}">
-                        <!-- Normal Search -->
-                        <div class="mb-4">
-                            <label class="text-sm text-gray-400 mb-2 block">البحث العادي</label>
+                        <!-- Search -->
+                        <div class="mb-5">
+                            <label class="text-sm text-gray-400 mb-2 block">البحث</label>
                             <div class="relative">
-                                <input type="text" name="search" id="normalBikeSearch" value="{{ request.GET.search }}" placeholder="ابحث عن دراجة..."
+                                <input type="text" name="search" value="{{ request.GET.search }}" placeholder="ابحث عن دراجة..." 
                                     class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 pr-10 text-sm focus:outline-none focus:border-red-500 transition">
                                 <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
                             </div>
-                        </div>
-
-                        <!-- Smart Filter / Typo Correction -->
-                        <div class="smart-filter-box mb-5" data-smart-filter data-smart-filter-url="{% url 'smart_filter_suggestions' %}">
-                            <div class="smart-filter-title">
-                                <span>✨ البحث الذكي</span>
-                                <small>تصحيح عربي/English</small>
-                            </div>
-                            <div class="relative">
-                                <input type="text" id="smartBikeSearch" autocomplete="off"
-                                    placeholder="مثال: Hnda أو هونداا"
-                                    class="smart-filter-input">
-                                <span class="smart-filter-status" id="smartFilterStatus" aria-live="polite"></span>
-                            </div>
-                            <div id="smartSuggestions" class="smart-suggestions" hidden></div>
-                            <p class="smart-filter-help">اكتب اسمًا ناقصًا أو فيه خطأ وسنعرض أقرب اقتراحات من دراجات مشروعك.</p>
                         </div>
 
                         <!-- Brand Filter -->

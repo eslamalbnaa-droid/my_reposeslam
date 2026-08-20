@@ -3,10 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
-from django.http import JsonResponse
 from .models import Motorcycle, Category, Cart, CartItem, Order, OrderItem
 from .forms import OrderForm, ContactForm
-from .smart_filter.engine import suggest_motorcycles
+from .queryset_lab import build_queryset_report
 
 
 def home(request):
@@ -22,6 +21,12 @@ def home(request):
         'brands': brands,
     }
     return render(request, 'shop/home.html', context)
+
+
+def queryset_lab(request):
+    """صفحة عملية توضح متطلبات واجب هندسة البرمجيات."""
+    report = build_queryset_report()
+    return render(request, 'shop/queryset_lab.html', {'report': report})
 
 
 def product_list(request):
@@ -100,20 +105,6 @@ def product_list(request):
         'available_colors': available_colors,
     }
     return render(request, 'shop/product_list.html', context)
-
-
-def smart_filter_suggestions(request):
-    """Return local smart-filter suggestions for Arabic/English bike names."""
-    query = request.GET.get('q', '').strip()
-    if not query:
-        return JsonResponse({'query': '', 'suggestions': []})
-
-    suggestions = suggest_motorcycles(
-        Motorcycle.objects.select_related('category').all(),
-        query,
-        limit=6,
-    )
-    return JsonResponse({'query': query, 'suggestions': suggestions})
 
 
 def product_detail(request, slug):

@@ -5,8 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}موتور شوب - دراجات نارية{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/icons.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: 'Cairo', sans-serif; }
+        .hero-gradient { background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%); }
+        .card-hover { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-12px); box-shadow: 0 30px 60px -15px rgba(220, 38, 38, 0.3); }
+        .btn-primary { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); transition: all 0.3s ease; }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4); }
+        .nav-blur { backdrop-filter: blur(20px); background: rgba(10, 10, 15, 0.95); }
+        .text-gradient { background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-slide-in-right { animation: slideInRight 0.8s ease-out forwards; opacity: 0; }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 4px; }
+    </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body class="bg-[#0a0a0f] text-white min-h-screen overflow-x-hidden">
@@ -177,10 +200,10 @@
                 <div>
                     <h4 class="font-bold text-lg mb-6 flex items-center"><i class="fas fa-phone text-red-500 ml-2"></i>تواصل معنا</h4>
                     <ul class="space-y-3 text-gray-400">
-                        <li class="flex items-center"><i class="fas fa-envelope w-6 text-red-500/70"></i>eslamalbna@gmail.com</li>
-                        <li class="flex items-center"><i class="fas fa-phone w-6 text-red-500/70"></i> 778348969</li>
-                        <li class="flex items-center"><i class="fas fa-map-marker-alt w-6 text-red-500/70"></i> اب  اليمن السعيد </li>
-                        <li class="flex items-center"><i class="fas fa-clock w-6 text-red-500/70"></i> السبت - الخميس : 9ص - 9م</li>
+                        <li class="flex items-center"><i class="fas fa-envelope w-6 text-red-500/70"></i> info@motoshop.com</li>
+                        <li class="flex items-center"><i class="fas fa-phone w-6 text-red-500/70"></i> +966 50 123 4567</li>
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt w-6 text-red-500/70"></i> الرياض، المملكة العربية السعودية</li>
+                        <li class="flex items-center"><i class="fas fa-clock w-6 text-red-500/70"></i> السبت - الخميس: 9ص - 9م</li>
                     </ul>
                 </div>
 
@@ -208,7 +231,25 @@
         </div>
     </footer>
 
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) { navbar.classList.add('shadow-lg'); } 
+            else { navbar.classList.remove('shadow-lg'); }
+        });
+        setTimeout(() => {
+            const messages = document.getElementById('messages');
+            if (messages) { messages.style.opacity = '0'; messages.style.transition = 'opacity 0.5s ease'; setTimeout(() => messages.remove(), 500); }
+        }, 5000);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('animate-fade-in-up'); observer.unobserve(entry.target); } });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.animate-on-scroll').forEach(el => { observer.observe(el); });
+    </script>
     {% block extra_js %}{% endblock %}
-    <script src="{% static 'js/main.js' %}" defer></script>
 </body>
 </html>

@@ -60,6 +60,13 @@ class Motorcycle(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True, blank=True)
     views_count = models.PositiveIntegerField(default=0, verbose_name="عدد المشاهدات")
+    favorite_by = models.ManyToManyField(
+        User,
+        through='Favorite',
+        related_name='favorite_motorcycles',
+        blank=True,
+        verbose_name="المستخدمون المفضلون",
+    )
 
     class Meta:
         ordering = ['-created_at']
@@ -78,6 +85,27 @@ class Motorcycle(models.Model):
 
     def __str__(self):
         return f"{self.get_brand_display()} {self.name} ({self.model_year})"
+
+
+class Favorite(models.Model):
+    """جدول وسيط صريح لعلاقة كثير إلى كثير بين المستخدمين والدراجات."""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='motorcycle_favorites', verbose_name="المستخدم")
+    motorcycle = models.ForeignKey(Motorcycle, on_delete=models.CASCADE, related_name='favorite_records', verbose_name="الدراجة")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإضافة")
+
+    class Meta:
+        verbose_name = "مفضلة"
+        verbose_name_plural = "المفضلات"
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'motorcycle'],
+                name='unique_user_motorcycle_favorite',
+            )
+        ]
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.username} ← {self.motorcycle.name}"
 
 
 class MotorcycleImage(models.Model):
