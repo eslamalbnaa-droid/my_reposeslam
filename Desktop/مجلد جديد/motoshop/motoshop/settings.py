@@ -61,11 +61,14 @@ WSGI_APPLICATION = 'motoshop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':'ESLAMDB'   ,    # ضع اسم قاعدة البيانات التي أنشأتها في PostgreSQL
+        'USER': 'postgres',                # اسم المستخدم (غالباً postgres افتراضياً)
+        'PASSWORD': 'eslam',          # كلمة المرور الخاصة بقاعدة البيانات لديك
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
