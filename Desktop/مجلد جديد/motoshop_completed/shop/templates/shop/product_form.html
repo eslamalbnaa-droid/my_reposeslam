@@ -1,0 +1,33 @@
+{% extends 'shop/base.html' %}
+{% block title %}{{ page_title }} - موتور شوب{% endblock %}
+{% block content %}
+<section class="py-28">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="mb-8">
+      <a href="{% url 'manage_products' %}" class="text-gray-400 hover:text-white text-sm"><i class="fas fa-arrow-right ml-2"></i>العودة لإدارة المنتجات</a>
+      <h1 class="text-3xl font-black mt-4">{{ page_title }}</h1>
+    </div>
+    <form method="post" enctype="multipart/form-data" class="glass-card rounded-2xl p-6 md:p-8 space-y-6">
+      {% csrf_token %}
+      {% if form.non_field_errors %}<div class="bg-red-500/10 border border-red-500/30 text-red-300 rounded-xl p-4">{{ form.non_field_errors }}</div>{% endif %}
+      <div class="grid md:grid-cols-2 gap-5">
+        {% for field in form %}
+        <div class="{% if field.name == 'description' or field.name == 'short_description' or field.name == 'image' %}md:col-span-2{% endif %}">
+          <label class="block font-bold mb-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="text-gray-500 text-xs mt-1">{{ field.help_text }}</p>{% endif %}
+          {% if field.errors %}<p class="text-red-400 text-sm mt-1">{{ field.errors.0 }}</p>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% if product and product.image %}
+      <div class="border-t border-gray-800 pt-5"><p class="text-sm text-gray-400 mb-2">الصورة الحالية</p><img src="{{ product.image.url }}" class="w-48 h-32 object-cover rounded-xl" alt=""></div>
+      {% endif %}
+      <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-800">
+        <button class="btn-primary px-7 py-3 rounded-xl font-bold"><i class="fas fa-save ml-2"></i>{{ submit_text }}</button>
+        <a href="{% url 'manage_products' %}" class="px-7 py-3 rounded-xl border border-gray-700 hover:border-white text-center font-bold">إلغاء</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

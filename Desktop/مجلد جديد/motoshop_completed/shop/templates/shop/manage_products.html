@@ -1,0 +1,72 @@
+{% extends 'shop/base.html' %}
+{% block title %}إدارة المنتجات - موتور شوب{% endblock %}
+{% block content %}
+<section class="py-28">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+      <div>
+        <p class="text-red-500 font-bold text-sm mb-2">لوحة الإدارة</p>
+        <h1 class="text-3xl md:text-4xl font-black">إدارة المنتجات</h1>
+        <p class="text-gray-400 mt-2">إضافة وتعديل وحذف الدراجات بحسب صلاحيات حسابك.</p>
+      </div>
+      {% if perms.shop.add_motorcycle %}
+      <a href="{% url 'product_create' %}" class="btn-primary px-6 py-3 rounded-xl font-bold inline-flex items-center justify-center gap-2">
+        <i class="fas fa-plus"></i> إضافة منتج
+      </a>
+      {% endif %}
+    </div>
+
+    <form method="get" class="glass-card rounded-2xl p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-3">
+        <input name="search" value="{{ search }}" placeholder="ابحث باسم المنتج أو العلامة أو التصنيف..." class="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-red-500">
+        <button class="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 font-bold transition"><i class="fas fa-search ml-2"></i>بحث</button>
+      </div>
+    </form>
+
+    <div class="overflow-x-auto rounded-2xl border border-gray-800 bg-gray-900/40">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-900 text-gray-300">
+          <tr>
+            <th class="text-right p-4">المنتج</th><th class="text-right p-4">التصنيف</th><th class="text-right p-4">السعر</th><th class="text-right p-4">المخزون</th><th class="text-right p-4">الحالة</th><th class="text-right p-4">الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-800">
+          {% for product in page_obj %}
+          <tr class="hover:bg-white/[0.03] transition">
+            <td class="p-4">
+              <div class="flex items-center gap-3 min-w-56">
+                {% if product.image %}<img src="{{ product.image.url }}" class="w-16 h-12 object-cover rounded-lg border border-gray-700" alt="{{ product.name }}">{% endif %}
+                <div><div class="font-bold">{{ product.name }}</div><div class="text-xs text-gray-500">{{ product.get_brand_display }} · {{ product.model_year }}</div></div>
+              </div>
+            </td>
+            <td class="p-4">{{ product.category.name }}</td>
+            <td class="p-4 font-bold text-red-400">{{ product.price }} ر.ي</td>
+            <td class="p-4">{{ product.stock }}</td>
+            <td class="p-4">
+              {% if product.stock > 0 %}<span class="px-3 py-1 rounded-full bg-green-500/10 text-green-400">متوفر</span>{% else %}<span class="px-3 py-1 rounded-full bg-red-500/10 text-red-400">نفد</span>{% endif %}
+            </td>
+            <td class="p-4">
+              <div class="flex gap-2">
+                <a href="{% url 'product_detail' product.slug %}" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center" title="عرض"><i class="fas fa-eye"></i></a>
+                {% if perms.shop.change_motorcycle %}<a href="{% url 'product_update' product.pk %}" class="w-9 h-9 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 flex items-center justify-center" title="تعديل"><i class="fas fa-edit"></i></a>{% endif %}
+                {% if perms.shop.delete_motorcycle %}<a href="{% url 'product_delete' product.pk %}" class="w-9 h-9 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 flex items-center justify-center" title="حذف"><i class="fas fa-trash"></i></a>{% endif %}
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="p-12 text-center text-gray-500">لا توجد منتجات مطابقة.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <div class="flex justify-center gap-2 mt-6">
+      {% if page_obj.has_previous %}<a class="px-4 py-2 bg-gray-800 rounded-lg" href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search|urlencode }}{% endif %}">السابق</a>{% endif %}
+      <span class="px-4 py-2 text-gray-400">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}<a class="px-4 py-2 bg-gray-800 rounded-lg" href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search|urlencode }}{% endif %}">التالي</a>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

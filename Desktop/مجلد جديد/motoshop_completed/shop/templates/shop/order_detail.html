@@ -1,0 +1,39 @@
+{% extends 'shop/base.html' %}
+{% block title %}تفاصيل الطلب #{{ order.id }} - موتور شوب{% endblock %}
+{% block content %}
+<section class="py-16">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="flex justify-between items-center gap-4 mb-8">
+      <div><h1 class="text-3xl font-black">تفاصيل الطلب #{{ order.id }}</h1><p class="text-gray-500 mt-2">{{ order.created_at|date:"Y-m-d H:i" }}</p></div>
+      <a href="{% url 'my_orders' %}" class="text-red-500">العودة لطلباتي</a>
+    </div>
+
+    {% if order.status == 'cancelled' %}
+      <div class="bg-red-600/10 border border-red-500/30 text-red-400 rounded-2xl p-5 mb-8">تم إلغاء هذا الطلب.</div>
+    {% else %}
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+      {% for step in timeline %}
+      <div class="rounded-xl p-4 border {% if step.done %}border-green-500/40 bg-green-600/10{% else %}border-gray-800 bg-gray-800/30{% endif %}">
+        <div class="font-bold {% if step.done %}text-green-400{% else %}text-gray-500{% endif %}">{{ step.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="bg-gray-800/30 border border-gray-800/50 rounded-2xl overflow-hidden mb-8">
+      {% for item in order.items.all %}
+      <div class="p-5 flex items-center gap-4 border-b border-gray-800/50 last:border-0">
+        <div class="w-20 h-20 bg-gray-800 rounded-xl overflow-hidden">{% if item.motorcycle.image %}<img src="{{ item.motorcycle.image.url }}" class="w-full h-full object-cover">{% endif %}</div>
+        <div class="flex-1"><div class="font-bold">{{ item.motorcycle.name }}</div><div class="text-gray-500 text-sm">{{ item.quantity }} × {{ item.price }} ر.ي</div></div>
+        <div class="text-red-500 font-black">{{ item.get_subtotal }} ر.ي</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-gray-800/30 border border-gray-800/50 rounded-2xl p-6"><h3 class="font-bold mb-3">بيانات الشحن</h3><p class="text-gray-400">{{ order.shipping_address }}</p><p class="mt-2">{{ order.phone }}</p></div>
+      <div class="bg-gray-800/30 border border-gray-800/50 rounded-2xl p-6"><h3 class="font-bold mb-3">ملخص الطلب</h3><div class="flex justify-between"><span>الحالة</span><strong>{{ order.get_status_display }}</strong></div><div class="flex justify-between mt-3"><span>الإجمالي</span><strong class="text-red-500">{{ order.total }} ر.ي</strong></div></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

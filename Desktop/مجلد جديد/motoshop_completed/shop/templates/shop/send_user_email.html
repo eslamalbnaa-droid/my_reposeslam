@@ -1,0 +1,85 @@
+{% extends 'shop/base.html' %}
+{% block title %}إرسال بريد للمستخدمين - MotoShop{% endblock %}
+
+{% block content %}
+<section class="admin-mail-page">
+    <div class="admin-mail-container">
+        <div class="admin-mail-hero">
+            <div>
+                <span class="admin-mail-kicker"><i class="fas fa-shield-halved"></i> للأدمن فقط</span>
+                <h1>إرسال رسالة إلى بريد المستخدم</h1>
+                <p>اختر مستخدمًا مسجلًا لديه بريد إلكتروني، ثم اكتب عنوان الرسالة ونصها. الإرسال يتم من بريد الموقع المضبوط في ملف <b>.env</b>.</p>
+            </div>
+            <a href="{% url 'manage_products' %}" class="admin-mail-secondary"><i class="fas fa-boxes-stacked"></i> إدارة المنتجات</a>
+        </div>
+
+        {% if not email_ready %}
+        <div class="admin-mail-setup-warning"><i class="fas fa-triangle-exclamation"></i><div><strong>البريد غير جاهز للإرسال الحقيقي</strong><p>ضع إيميل Gmail وكلمة مرور التطبيقات داخل <b>.env</b> ثم أعد تشغيل السيرفر.</p></div></div>
+        {% endif %}
+
+        <div class="admin-mail-layout">
+            <div class="admin-mail-card">
+                <div class="admin-mail-card-title"><i class="fas fa-paper-plane"></i><div><h2>رسالة جديدة</h2><p>ستصل مباشرة إلى البريد المسجل للمستخدم.</p></div></div>
+                <form method="post" class="admin-mail-form">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}<div class="admin-mail-error">{{ form.non_field_errors }}</div>{% endif %}
+                    <div class="admin-mail-field">
+                        <label for="{{ form.recipient.id_for_label }}">{{ form.recipient.label }}</label>
+                        {{ form.recipient }}
+                        {% for error in form.recipient.errors %}<small class="admin-mail-error-text">{{ error }}</small>{% endfor %}
+                        <small class="admin-mail-help">تظهر فقط الحسابات النشطة التي تحتوي على بريد إلكتروني.</small>
+                    </div>
+                    <div class="admin-mail-field">
+                        <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
+                        {{ form.subject }}
+                        {% for error in form.subject.errors %}<small class="admin-mail-error-text">{{ error }}</small>{% endfor %}
+                    </div>
+                    <div class="admin-mail-field">
+                        <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+                        {{ form.message }}
+                        {% for error in form.message.errors %}<small class="admin-mail-error-text">{{ error }}</small>{% endfor %}
+                    </div>
+                    <button type="submit" class="admin-mail-submit"><i class="fas fa-paper-plane"></i> إرسال إلى البريد</button>
+                </form>
+            </div>
+
+            <aside class="admin-mail-side">
+                <div class="admin-mail-info">
+                    <i class="fas fa-circle-info"></i>
+                    <div><h3>قبل الإرسال</h3><p>يجب أن يكون الإنترنت متصلًا وأن يحتوي ملف <b>.env</b> على <b>EMAIL_HOST_USER</b> و<b>EMAIL_HOST_PASSWORD</b> الصحيحتين.</p></div>
+                </div>
+                <div class="admin-mail-info">
+                    <i class="fas fa-lock"></i>
+                    <div><h3>الصلاحية</h3><p>هذه الصفحة لا يفتحها المستخدم العادي حتى لو كتب الرابط يدويًا.</p></div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="admin-mail-history">
+            <div class="admin-mail-history-head"><div><h2>آخر الرسائل</h2><p>سجل آخر 20 محاولة إرسال من الموقع.</p></div><a href="/admin/shop/sentemail/" class="admin-mail-secondary"><i class="fas fa-list"></i> السجل الكامل</a></div>
+            <div class="admin-mail-table-wrap">
+                <table class="admin-mail-table">
+                    <thead><tr><th>المستخدم</th><th>البريد</th><th>العنوان</th><th>الحالة</th><th>التاريخ</th></tr></thead>
+                    <tbody>
+                    {% for item in recent_emails %}
+                        <tr>
+                            <td>{% if item.recipient_user %}{{ item.recipient_user.username }}{% else %}—{% endif %}</td>
+                            <td dir="ltr">{{ item.recipient_email }}</td>
+                            <td>{{ item.subject }}</td>
+                            <td>{% if item.status == 'sent' %}<span class="mail-status sent"><i class="fas fa-check"></i> تم الإرسال</span>{% else %}<span class="mail-status failed"><i class="fas fa-xmark"></i> فشل</span>{% endif %}</td>
+                            <td>{{ item.created_at|date:'Y-m-d H:i' }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="5" class="admin-mail-empty">لم يتم إرسال رسائل من هذه الصفحة بعد.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.admin-mail-page{padding:110px 18px 60px;min-height:75vh}.admin-mail-container{max-width:1180px;margin:auto}.admin-mail-hero{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin-bottom:28px}.admin-mail-hero h1{font-size:clamp(28px,4vw,42px);font-weight:900;margin:8px 0}.admin-mail-hero p{color:#9ca3af;max-width:720px;line-height:1.9}.admin-mail-kicker{color:#f87171;font-weight:800;font-size:14px}.admin-mail-setup-warning{display:flex;gap:12px;align-items:flex-start;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35);color:#fde68a;padding:16px 18px;border-radius:16px;margin-bottom:20px}.admin-mail-setup-warning p{margin:5px 0 0;color:#fcd34d}.admin-mail-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,.7fr);gap:22px}.admin-mail-card,.admin-mail-history,.admin-mail-info{background:rgba(24,24,27,.78);border:1px solid #27272a;border-radius:20px;box-shadow:0 18px 50px rgba(0,0,0,.18)}.admin-mail-card{padding:26px}.admin-mail-card-title{display:flex;gap:14px;align-items:center;margin-bottom:24px}.admin-mail-card-title>i{width:46px;height:46px;border-radius:14px;background:rgba(239,68,68,.12);color:#f87171;display:grid;place-items:center;font-size:19px}.admin-mail-card-title h2,.admin-mail-history h2,.admin-mail-info h3{font-weight:900;margin:0}.admin-mail-card-title p,.admin-mail-history p,.admin-mail-info p{color:#9ca3af;margin:4px 0 0;line-height:1.7}.admin-mail-form{display:grid;gap:18px}.admin-mail-field{display:grid;gap:8px}.admin-mail-field label{font-weight:800;color:#e5e7eb}.admin-mail-input{width:100%;background:#09090b;border:1px solid #3f3f46;border-radius:12px;padding:13px 14px;color:#fff;outline:none}.admin-mail-input:focus{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.08)}.admin-mail-textarea{resize:vertical;min-height:190px;line-height:1.8}.admin-mail-help{color:#71717a}.admin-mail-error-text,.admin-mail-error{color:#fca5a5}.admin-mail-submit{width:100%;border:0;border-radius:13px;padding:14px 18px;background:#dc2626;color:#fff;font-weight:900;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:9px}.admin-mail-submit:hover{background:#ef4444}.admin-mail-side{display:grid;gap:14px;align-content:start}.admin-mail-info{padding:20px;display:flex;gap:13px}.admin-mail-info>i{color:#f87171;margin-top:4px}.admin-mail-secondary{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:11px;border:1px solid #3f3f46;color:#e5e7eb;text-decoration:none;white-space:nowrap}.admin-mail-secondary:hover{border-color:#ef4444;color:#fff}.admin-mail-history{margin-top:24px;padding:22px}.admin-mail-history-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:16px}.admin-mail-table-wrap{overflow:auto}.admin-mail-table{width:100%;border-collapse:collapse;min-width:760px}.admin-mail-table th,.admin-mail-table td{padding:13px 12px;border-bottom:1px solid #27272a;text-align:right}.admin-mail-table th{color:#a1a1aa;font-size:13px}.mail-status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800}.mail-status.sent{color:#86efac;background:rgba(34,197,94,.1)}.mail-status.failed{color:#fca5a5;background:rgba(239,68,68,.1)}.admin-mail-empty{text-align:center!important;color:#71717a;padding:28px!important}@media(max-width:850px){.admin-mail-layout{grid-template-columns:1fr}.admin-mail-hero,.admin-mail-history-head{align-items:flex-start;flex-direction:column}.admin-mail-page{padding-top:90px}}
+</style>
+{% endblock %}

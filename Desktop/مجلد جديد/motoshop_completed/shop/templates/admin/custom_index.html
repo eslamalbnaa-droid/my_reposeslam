@@ -1,0 +1,15 @@
+{% extends "admin/index.html" %}
+{% load i18n dashboard_tags %}
+
+{% block content %}
+{% admin_dashboard_stats as stats %}
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:0 0 24px;">
+  <div class="module" style="padding:16px"><strong>المستخدمون</strong><div style="font-size:26px;margin-top:8px">{{ stats.users }}</div></div>
+  <div class="module" style="padding:16px"><strong>الدراجات</strong><div style="font-size:26px;margin-top:8px">{{ stats.motorcycles }}</div></div>
+  <div class="module" style="padding:16px"><strong>الطلبات</strong><div style="font-size:26px;margin-top:8px">{{ stats.orders }}</div></div>
+  <div class="module" style="padding:16px"><strong>بانتظار المعالجة</strong><div style="font-size:26px;margin-top:8px">{{ stats.pending_orders }}</div></div>
+  <div class="module" style="padding:16px"><strong>التقييمات</strong><div style="font-size:26px;margin-top:8px">{{ stats.reviews }}</div></div>
+  <div class="module" style="padding:16px"><strong>إجمالي قيمة الطلبات</strong><div style="font-size:22px;margin-top:8px">{{ stats.revenue }} ر.ي</div></div>
+</div>
+{{ block.super }}
+{% endblock %}

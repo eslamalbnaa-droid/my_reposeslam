@@ -1,0 +1,42 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block title %}المفضلة - MotoShop{% endblock %}
+{% block content %}
+<section class="py-16 min-h-[70vh]">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-4xl font-black"><i class="fas fa-heart text-red-500 ml-3"></i>المفضلة</h1>
+      <a href="{% url 'product_list' %}" class="text-red-400 hover:text-red-300">تصفح الدراجات</a>
+    </div>
+    {% if favorite_records %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for favorite in favorite_records %}
+      <article class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
+        <a href="{% url 'product_detail' favorite.motorcycle.slug %}">
+          <img src="{{ favorite.motorcycle.image.url }}" alt="{{ favorite.motorcycle.name }}" class="w-full h-52 object-cover">
+        </a>
+        <div class="p-5">
+          <h2 class="text-xl font-bold mb-2">{{ favorite.motorcycle }}</h2>
+          <p class="text-red-400 font-black mb-4">{{ favorite.motorcycle.price }} ر.ي</p>
+          <div class="flex gap-3">
+            <a href="{% url 'product_detail' favorite.motorcycle.slug %}" class="flex-1 text-center btn-primary py-2 rounded-lg">التفاصيل</a>
+            <form method="post" action="{% url 'toggle_favorite' favorite.motorcycle.slug %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{% url 'favorites' %}">
+              <button type="submit" class="px-4 py-2 rounded-lg border border-red-500 text-red-400 hover:bg-red-500/10" title="إزالة من المفضلة"><i class="fas fa-trash"></i></button>
+            </form>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-12 text-center">
+        <i class="fas fa-heart text-6xl text-gray-600 mb-4"></i>
+        <p class="text-xl text-gray-400 mb-6">لا توجد دراجات في المفضلة حتى الآن.</p>
+        <a href="{% url 'product_list' %}" class="btn-primary inline-block px-6 py-3 rounded-xl">اذهب إلى المتجر</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
